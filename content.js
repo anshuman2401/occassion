@@ -160,7 +160,7 @@ function addLikesDislikes() {
             type: 'updateDislike',
             styleId: getStyleId(),
             uid: userid,
-            occasion: currentIndex
+            occasion: occassion[currentIndex]
         }
         sendMessage(request, function(response) {
             console.log("Dislikes: " + response.count)
@@ -187,7 +187,7 @@ function addLikesDislikes() {
             type: 'updateLike',
             styleId: getStyleId(),
             uid: userid,
-            occasion: currentIndex
+            occasion: occassion[currentIndex]
         }
         sendMessage(request, function(response) {
             console.log("Likes: " + response.count)
