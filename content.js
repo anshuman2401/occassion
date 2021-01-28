@@ -140,7 +140,7 @@ function addLikesDislikes() {
     disLikeImage.style.margin = "10px"
     disLikeDiv.appendChild(disLikeImage)
     disLikeImage.addEventListener('click', function() {
-        alert(-1)
+        toggleDislikes(getSkuId(), userid, 'occasion');
     });
 
     var likeDiv = document.createElement("div")
@@ -152,7 +152,7 @@ function addLikesDislikes() {
     likeImage.style.margin = "10px"
     likeDiv.appendChild(likeImage)
     likeImage.addEventListener('click', function() {
-        alert(1)
+        toggleLikes(getSkuId(), userid, 'occasion');
     });
 
 
