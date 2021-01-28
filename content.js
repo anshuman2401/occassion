@@ -1,4 +1,6 @@
-var slideIndex = 1;
+var posTop = ["100px"];
+var posLeft = ["355px"];
+
 if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
         
     var theButton = createOccasionButton()
@@ -20,7 +22,7 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
             $('.your-class').slick();
           });
         
-        // addCanvas(imagesHolder)
+        addCanvas(imagesHolder)
         // loadStaticImages(imagesHolder)
     });
 }
@@ -29,16 +31,16 @@ function createModal() {
     var modal = document.createElement("div");
     modal.style.position = 'absolute'
     modal.style.display = "inline-block";
-    modal.style.top = "150px"
-    modal.style.left = "20%"
+    modal.style.top = "250px"
+    modal.style.left = "30%"
     document.getElementsByClassName("pdp-pdp-container")[0].appendChild(modal);
     return modal
 }
 
 function getImageHolder () {
     var imagesHolder = document.createElement("div");
-    imagesHolder.style.width = "1000px";
-    imagesHolder.style.height = "700px"
+    imagesHolder.style.width = "800px";
+    imagesHolder.style.height = "600px"
     imagesHolder.style.textAlign = "center"
     imagesHolder.style.color = "#000"
     imagesHolder.style.borderRadius = "20px"
@@ -46,7 +48,7 @@ function getImageHolder () {
     imagesHolder.style.position = "absolute"
     imagesHolder.style.zIndex = "30";
     imagesHolder.style.backgroundColor = "#FFF"
-    imagesHolder.style.opacity = "0.93"
+    // imagesHolder.style.opacity = "1"
     return imagesHolder
 }
 
@@ -76,11 +78,12 @@ var canvasImage = new MarvinImage();
 function addCanvas(imagesHolder) {
     var canvas = document.createElement("canvas")
     canvas.id = "canvasId"
+    canvas.style = "position:absolute; top:" + posTop[0] + "; left:" + posLeft[0] + "; z-index:1";
     canvas.width = 400;
-    canvas.height = 400;
-    canvas.style.width = "400px"
-    canvas.style.height = "400px"
-
+    canvas.height = 600;
+    canvas.style.width = "290px";
+    canvas.style.height = "420px";
+  
     imagesHolder.appendChild(canvas)
     canvasImage.load(getFirstImageFromPage(), imageLoaded);
 }
@@ -88,7 +91,7 @@ function addCanvas(imagesHolder) {
 function imageLoaded(){
     whiteToAlpha(canvasImage);
     Marvin.alphaBoundary(canvasImage.clone(), canvasImage, 8);
-    Marvin.scale(canvasImage.clone(), canvasImage, 100);
+    Marvin.scale(canvasImage.clone(), canvasImage, 480);
     canvas = document.getElementById("canvasId")
     canvasImage.draw(canvas);
 }
@@ -101,7 +104,7 @@ function whiteToAlpha(canvasImage){
             var g = canvasImage.getIntComponent1(x,y);
             var b = canvasImage.getIntComponent2(x,y);
         
-            if(r >= 250 && g >= 250 && b >= 250){
+            if(r >= 220 && g >= 220 && b >= 220){
                 canvasImage.setIntColor(x, y, 0);
             }
         }
@@ -115,7 +118,8 @@ function getFirstImageFromPage() {
 function createSlideShow () {
     var container = document.createElement("div")
     container.className = "your-class"
-   
+    container.style.marginTop = "20px"
+
     var slide1 = document.createElement("div")
     var image1 = document.createElement("img")
     image1.style.width = "100%"
@@ -130,10 +134,15 @@ function createSlideShow () {
     image2.src = chrome.extension.getURL("images/static_image_1.jpg");
     slide2.appendChild(image2)
 
-    // var slide3 = document.createElement("div")
+    var slide3 = document.createElement("div")
+    var image3 = document.createElement("img")
+    image3.style.width = "100%"
+    image3.style.height = "100%"
+    image3.src = chrome.extension.getURL("images/static_image_2.jpg");
+    slide3.appendChild(image3)
 
     container.appendChild(slide1)
     container.appendChild(slide2)
-    // container.appendChild(slide3)
+    container.appendChild(slide3)
     return container
 }
