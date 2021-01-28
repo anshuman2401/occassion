@@ -242,16 +242,16 @@ function fillLikeDislikes() {
         occasion: occasion[0]
     }
     sendMessage(request, function (response) {
-        document.getElementById("likeCounter").innerHTML = response.count;
+        likeCounter.innerHTML = response.count;
     });
 
     request.type = 'getDislike';
     sendMessage(request, function (response) {
-        document.getElementById("dislikeCounter").innerHTML = response.count;
+        dislikeCounter.innerHTML = response.count;
     });
 
     request.type = 'getBoughtOccasion';
     sendMessage(request, function (response) {
-        document.getElementById("boughtCounter").innerHTML = response.count;
+        boughtCounter.innerHTML = response.count;
     });
 }
