@@ -9,23 +9,16 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
     var theButton = createOccasionButton()
     
     theButton.addEventListener('click', function() {
+        console.log(getSkuId())
 
-        var modal = createModal()
-        var container = document.createElement("div")
-        var imagesHolder = getImageHolder()
-
-        var slideShow = createSlideShow()
-        imagesHolder.appendChild(slideShow)
-
-        container.appendChild(imagesHolder)
+        createModal()
+        createModalContainer()
+        createSlideShow()
     
-        modal.appendChild(container);
-
-        $(document).ready(function(){
-            $('.your-class').slick();
-          });
+        $(document).ready(function(){$('.your-class').slick();});
         
-        addCanvas(imagesHolder)
+        addCanvas(modalContainer)
+        addLikesDislikes()
 
         document.getElementsByClassName("slick-prev slick-arrow")[0].addEventListener("click", sliderClick);
         document.getElementsByClassName("slick-next slick-arrow")[0].addEventListener("click", sliderClick);
@@ -41,27 +34,27 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
 
 function createModal() {
     var modal = document.createElement("div");
+    modal.id = "mainModal"
     modal.style.position = 'absolute'
     modal.style.display = "inline-block";
     modal.style.top = "150px"
     modal.style.left = "27%"
     document.getElementsByClassName("pdp-pdp-container")[0].appendChild(modal);
-    return modal
 }
 
-function getImageHolder () {
-    var imagesHolder = document.createElement("div");
-    imagesHolder.style.width = "800px";
-    imagesHolder.style.height = "600px"
-    imagesHolder.style.textAlign = "center"
-    imagesHolder.style.color = "#000"
-    imagesHolder.style.borderRadius = "20px"
-    imagesHolder.style.padding = "8px 0px"
-    imagesHolder.style.position = "absolute"
-    imagesHolder.style.zIndex = "30";
-    imagesHolder.style.backgroundColor = "rgb(154 154 154)"
-    // imagesHolder.style.opacity = "1"
-    return imagesHolder
+function createModalContainer () {
+    var modalContainer = document.createElement("div");
+    modalContainer.id = "modalContainer"
+    modalContainer.style.width = "800px";
+    modalContainer.style.height = "600px"
+    modalContainer.style.textAlign = "center"
+    modalContainer.style.color = "#000"
+    modalContainer.style.borderRadius = "20px"
+    modalContainer.style.padding = "8px 0px"
+    modalContainer.style.position = "absolute"
+    modalContainer.style.zIndex = "30";
+    modalContainer.style.backgroundColor = "#F2EDED"
+    document.getElementById("mainModal").appendChild(modalContainer)
 }
 
 function createOccasionButton() {
@@ -77,7 +70,7 @@ function createOccasionButton() {
 
 var canvasImage = new MarvinImage();
 
-function addCanvas(imagesHolder) {
+function addCanvas(modalContainer) {
     var canvas = document.createElement("canvas")
     canvas.id = "canvasId"
     canvas.style = "position:absolute; top:" + posTop[0] + "; left:" + posLeft[0] + "; z-index:1";
@@ -86,7 +79,7 @@ function addCanvas(imagesHolder) {
     canvas.style.width = width[0];
     canvas.style.height = height[0];
   
-    imagesHolder.appendChild(canvas)
+    modalContainer.appendChild(canvas)
     canvasImage.load(getFirstImageFromPage(), imageLoaded);
 }
 
@@ -120,8 +113,7 @@ function getFirstImageFromPage() {
 function createSlideShow () {
     var container = document.createElement("div")
     container.className = "your-class"
-    container.style.margin = "10px"
-    container.style.marginTop = "20px"
+    container.style.margin = "20px"
 
     for (var i=0; i<5; i++) {
         var slide = document.createElement("div")
@@ -132,5 +124,48 @@ function createSlideShow () {
         slide.appendChild(image); 
         container.appendChild(slide)
     }
-    return container
+    document.getElementById("modalContainer").appendChild(container)
+}
+
+function addLikesDislikes() {
+    var likesContainer = document.createElement("div")
+    likesContainer.style.margin = "-15px 10px 5px 10px"
+    likesContainer.style.backgroundColor = "#FCEDED"
+
+    var disLikeDiv = document.createElement("div")
+    var disLikeImage = document.createElement("img")
+    disLikeImage.src = chrome.extension.getURL("images/dislike.png");
+    disLikeImage.style.float = "left"
+    disLikeImage.style.height = "45px"
+    disLikeImage.style.width = "45px"
+    disLikeImage.style.margin = "10px"
+    disLikeDiv.appendChild(disLikeImage)
+    disLikeImage.addEventListener('click', function() {
+        alert(-1)
+    });
+
+    var likeDiv = document.createElement("div")
+    var likeImage = document.createElement("img")
+    likeImage.src = chrome.extension.getURL("images/like.png");
+    likeImage.style.float = "left"
+    likeImage.style.height = "50px"
+    likeImage.style.width = "50px"
+    likeImage.style.margin = "10px"
+    likeDiv.appendChild(likeImage)
+    likeImage.addEventListener('click', function() {
+        alert(1)
+    });
+
+
+    likesContainer.appendChild(disLikeDiv)
+    likesContainer.appendChild(likeDiv)
+
+    var container = document.getElementById("modalContainer")
+    container.appendChild(likesContainer)
+}
+
+function getSkuId() {
+    var url = document.URL;
+    pattern = '\/([0-9]{8})'
+    return url.match(pattern)[1]
 }
