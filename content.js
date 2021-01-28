@@ -9,8 +9,6 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
     var theButton = createOccasionButton()
     
     theButton.addEventListener('click', function() {
-        console.log(getSkuId())
-
         createModal()
         createModalContainer()
         createSlideShow()
