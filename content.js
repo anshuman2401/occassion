@@ -9,6 +9,7 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
     var theButton = createOccasionButton()
     
     theButton.addEventListener('click', function() {
+        console.log("User Id: " + userid)
         createModal()
         createModalContainer()
         createSlideShow()
@@ -37,6 +38,22 @@ function createModal() {
     modal.style.display = "inline-block";
     modal.style.top = "150px"
     modal.style.left = "27%"
+
+    var closeBtn = document.createElement("div");
+    closeBtn.style.fontSize = "25px"
+    closeBtn.style.width = "40px"
+    closeBtn.style.height = "40px"
+    closeBtn.style.borderRadius = "20px"
+    closeBtn.innerHTML = "X";
+    closeBtn.style = "font-size:20px;color:gray;background:#FCEDED;position:absolute;font-weight:bold;z-index:31;left:778px;top:-14px;cursor:pointer;padding:5px 10px 5px 10px;opacity:0.7;border:5px black;border-radius:20px;"
+    closeBtn.addEventListener("click", closeModal);
+
+    function closeModal() {
+        document.getElementById("mainModal").remove();
+    }
+
+    modal.appendChild(closeBtn);
+
     document.getElementsByClassName("pdp-pdp-container")[0].appendChild(modal);
 }
 
@@ -150,6 +167,13 @@ function addLikesDislikes() {
         })
     });
 
+
+    var disLikeCounter = document.createElement("div")
+    disLikeCounter.style.float = "left"
+    disLikeCounter.style.fontSize = "20px"
+    disLikeCounter.style.marginTop = "20px"
+    disLikeCounter.innerText = "10"
+
     var likeDiv = document.createElement("div")
     var likeImage = document.createElement("img")
     likeImage.src = chrome.extension.getURL("images/thumbs-up-solid.svg");
@@ -170,9 +194,17 @@ function addLikesDislikes() {
         })
     });
 
+    var likeCounter = document.createElement("div")
+    likeCounter.style.float = "left"
+    likeCounter.style.fontSize = "20px"
+    likeCounter.style.marginTop = "20px"
+    likeCounter.innerText = "15"
 
     likesContainer.appendChild(likeDiv)
+    likesContainer.appendChild(likeCounter)
+
     likesContainer.appendChild(disLikeDiv)
+    likesContainer.appendChild(disLikeCounter)
 
     var container = document.getElementById("modalContainer")
     container.appendChild(likesContainer)
@@ -189,14 +221,12 @@ function getStyleId() {
 }
 
 function getRandomToken() {
-    // E.g. 8 * 32 = 256 bits token
     var randomPool = new Uint8Array(32);
     crypto.getRandomValues(randomPool);
     var hex = '';
     for (var i = 0; i < randomPool.length; ++i) {
         hex += randomPool[i].toString(16);
     }
-    // E.g. db18458e2782b2b77e36769c569e263a53885a9944dd0a861e5064eac16f1a
     return hex;
 }
 
