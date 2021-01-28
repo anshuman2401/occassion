@@ -1,7 +1,7 @@
-var posTop = ["230px", "110px","232px"];
-var posLeft = ["242px","345px","365px"];
-var width = ["220px", "295px", "160px", "160px"];
-var height = ["330px", "420px", "220px", "220px"];
+var posTop = ["230px", "110px", "232px", "130px", "90px"];
+var posLeft = ["242px", "345px", "365px", "-80px", "-20px"];
+var width = ["220px", "295px", "160px", "280px", "310px"];
+var height = ["330px", "420px", "220px", "400px", "450px"];
 var currentIndex = 0;
 
 if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
@@ -26,7 +26,6 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
           });
         
         addCanvas(imagesHolder)
-        // loadStaticImages(imagesHolder)
 
         document.getElementsByClassName("slick-prev slick-arrow")[0].addEventListener("click", sliderClick);
         document.getElementsByClassName("slick-next slick-arrow")[0].addEventListener("click", sliderClick);
@@ -63,16 +62,6 @@ function getImageHolder () {
     imagesHolder.style.backgroundColor = "rgb(154 154 154)"
     // imagesHolder.style.opacity = "1"
     return imagesHolder
-}
-
-function loadStaticImages(imagesHolder) {
-    for(i = 0 ;i < 1; i++) {
-        var image = document.createElement("img")
-        image.style.width = "400px"
-        image.style.height = "400px"
-        image.src = chrome.extension.getURL("images/static_image_" + i + ".jpg");
-        imagesHolder.appendChild(image)
-    }
 }
 
 function createOccasionButton() {
@@ -134,29 +123,14 @@ function createSlideShow () {
     container.style.margin = "10px"
     container.style.marginTop = "20px"
 
-    var slide1 = document.createElement("div")
-    var image1 = document.createElement("img")
-    image1.style.width = "100%"
-    image1.style.height = "100%"
-    image1.src = chrome.extension.getURL("images/static_image_0.jpg");
-    slide1.appendChild(image1);
-
-    var slide2 = document.createElement("div")
-    var image2 = document.createElement("img")
-    image2.style.width = "100%"
-    image2.style.height = "100%"
-    image2.src = chrome.extension.getURL("images/static_image_1.jpg");
-    slide2.appendChild(image2)
-
-    var slide3 = document.createElement("div")
-    var image3 = document.createElement("img")
-    image3.style.width = "100%"
-    image3.style.height = "100%"
-    image3.src = chrome.extension.getURL("images/static_image_2.jpg");
-    slide3.appendChild(image3)
-
-    container.appendChild(slide1)
-    container.appendChild(slide2)
-    container.appendChild(slide3)
+    for (var i=0; i<5; i++) {
+        var slide = document.createElement("div")
+        var image = document.createElement("img")
+        image.style.width = "100%"
+        image.style.height = "100%"
+        image.src = chrome.extension.getURL("images/static_image_" + i + ".jpg");
+        slide.appendChild(image); 
+        container.appendChild(slide)
+    }
     return container
 }
