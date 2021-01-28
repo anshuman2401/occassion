@@ -163,7 +163,10 @@ function addLikesDislikes() {
             uid: userid,
             occasion: occasion[currentIndex]
         }
-        sendMessage(request)
+        sendMessage(request, response => {
+            if (!response.error)
+                fillCountData(currentIndex, false);
+        });
     });
 
 
@@ -189,7 +192,10 @@ function addLikesDislikes() {
             uid: userid,
             occasion: occasion[currentIndex]
         }
-        sendMessage(request)
+        sendMessage(request, response => {
+            if (!response.error)
+                fillCountData(currentIndex, false);
+        });
     });
 
     let likeCounter = document.createElement("div")
@@ -242,18 +248,18 @@ function fillCountData(index, bought) {
         styleId: getStyleId(document.URL),
         occasion: occasion[index]
     }
-    sendMessage(request, function (response) {
+    sendMessage(request, response => {
         likeCounter.innerHTML = response.count ? response.count : 0;
     });
 
     request.type = 'getDislike';
-    sendMessage(request, function (response) {
+    sendMessage(request, response => {
         dislikeCounter.innerHTML = response.count ? response.count : 0;
     });
 
     if (bought) {
         request.type = 'getBoughtOccasion';
-        sendMessage(request, function (response) {
+        sendMessage(request, response => {
             boughtCounter.innerHTML = response.count ? response.count : 0;
         });
     }

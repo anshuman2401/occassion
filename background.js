@@ -69,15 +69,23 @@ function updateBoughtOccasion(styleId, uid, occasion, allOccasions) {
 
 function toggleLikes(styleId, uid, occasion, callback) {
     toggle(database.ref(styleId + '/' + occasion), uid, 'likes', 'likeCount', true)
-    toggle(database.ref(styleId + '/' + occasion), uid, 'dislikes', 'dislikeCount', false)
+    toggle(database.ref(styleId + '/' + occasion), uid, 'dislikes', 'dislikeCount', false, error => {
+        callback({
+            error
+        });
+    })
 }
 
 function toggleDislikes(styleId, uid, occasion, callback) {
     toggle(database.ref(styleId + '/' + occasion), uid, 'dislikes', 'dislikeCount', true)
-    toggle(database.ref(styleId + '/' + occasion), uid, 'likes', 'likeCount', false)
+    toggle(database.ref(styleId + '/' + occasion), uid, 'likes', 'likeCount', false, error => {
+        callback({
+            error
+        });
+    })
 }
 
-function toggle(occasionRef, uid, type, count, clicked) {
+function toggle(occasionRef, uid, type, count, clicked, callback) {
     occasionRef.transaction((update) => {
         if (!update)
             update = {};
@@ -93,6 +101,8 @@ function toggle(occasionRef, uid, type, count, clicked) {
             update[type][uid] = true;
         }
         return update;
+    }, (error, committed, snapshot) => {
+        callback(error);
     });
 }
 
