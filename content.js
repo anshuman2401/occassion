@@ -31,8 +31,8 @@ function createModal() {
     var modal = document.createElement("div");
     modal.style.position = 'absolute'
     modal.style.display = "inline-block";
-    modal.style.top = "250px"
-    modal.style.left = "30%"
+    modal.style.top = "150px"
+    modal.style.left = "27%"
     document.getElementsByClassName("pdp-pdp-container")[0].appendChild(modal);
     return modal
 }
@@ -47,7 +47,7 @@ function getImageHolder () {
     imagesHolder.style.padding = "8px 0px"
     imagesHolder.style.position = "absolute"
     imagesHolder.style.zIndex = "30";
-    imagesHolder.style.backgroundColor = "#FFF"
+    imagesHolder.style.backgroundColor = "rgb(154 154 154)"
     // imagesHolder.style.opacity = "1"
     return imagesHolder
 }
@@ -118,6 +118,7 @@ function getFirstImageFromPage() {
 function createSlideShow () {
     var container = document.createElement("div")
     container.className = "your-class"
+    container.style.margin = "10px"
     container.style.marginTop = "20px"
 
     var slide1 = document.createElement("div")

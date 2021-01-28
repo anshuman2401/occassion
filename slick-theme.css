@@ -36,7 +36,7 @@
 
     cursor: pointer;
 
-    color: transparent;
+    background: darkslategrey;
     border: none;
     outline: none;
     background: transparent;
@@ -48,7 +48,7 @@
 {
     color: transparent;
     outline: none;
-    background: transparent;
+    background: darkslategrey;
 }
 .slick-prev:hover:before,
 .slick-prev:focus:before,
@@ -80,11 +80,13 @@
 .slick-prev
 {
     left: -25px;
+    background: darkslategrey;
 }
 [dir='rtl'] .slick-prev
 {
     right: -25px;
     left: auto;
+    background: darkslategrey;
 }
 .slick-prev:before
 {
@@ -98,11 +100,13 @@
 .slick-next
 {
     right: -25px;
+    background: darkslategrey;
 }
 [dir='rtl'] .slick-next
 {
     right: auto;
     left: -25px;
+    background: darkslategrey;
 }
 .slick-next:before
 {
