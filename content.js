@@ -3,13 +3,12 @@ var posLeft = ["240px", "370px", "455px", "-50px", "385px", "280px", "465px", "3
 var width = ["250px", "330px", "180px", "320px", "365px", "290px", "280px", "200px", "380px"];
 var height = ["380px", "500px", "270px", "490px", "550px", "420px", "430px", "300px", "570px"];
 var currentIndex = 0;
-var userid;
+var likeCount = 0, dislikeCount = 0;
 
 if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
     var theButton = createOccasionButton()
     
     theButton.addEventListener('click', function() {
-        console.log("User Id: " + userid)
         createModal()
         createModalContainer()
         createSlideShow()
@@ -77,7 +76,7 @@ function createOccasionButton() {
     button.innerHTML = "Choose Occasion";
     button.style.margin = "10px 10px 10px 10px"
     button.style.padding = "10px 5px 10px 5px"
-    button.id = "occassionButton";
+    button.id = "occasionButton";
     button.type = "button";
     document.getElementsByClassName("pdp-action-container pdp-fixed")[0].appendChild(button);
     return button
@@ -158,13 +157,11 @@ function addLikesDislikes() {
     disLikeImage.addEventListener('click', function() {
         const request = {
             type: 'updateDislike',
-            styleId: getStyleId(),
+            styleId: getStyleId(document.URL),
             uid: userid,
-            occasion: occassion[currentIndex]
+            occasion: occasion[currentIndex]
         }
-        sendMessage(request, function(response) {
-            console.log("Dislikes: " + response.count)
-        })
+        sendMessage(request)
     });
 
 
@@ -172,7 +169,7 @@ function addLikesDislikes() {
     disLikeCounter.style.float = "left"
     disLikeCounter.style.fontSize = "20px"
     disLikeCounter.style.marginTop = "20px"
-    disLikeCounter.innerText = "10"
+    disLikeCounter.innerText = dislikeCount.toString()
 
     var likeDiv = document.createElement("div")
     var likeImage = document.createElement("img")
@@ -185,20 +182,18 @@ function addLikesDislikes() {
     likeImage.addEventListener('click', function() {
         const request = {
             type: 'updateLike',
-            styleId: getStyleId(),
+            styleId: getStyleId(document.URL),
             uid: userid,
-            occasion: occassion[currentIndex]
+            occasion: occasion[currentIndex]
         }
-        sendMessage(request, function(response) {
-            console.log("Likes: " + response.count)
-        })
+        sendMessage(request)
     });
 
     var likeCounter = document.createElement("div")
     likeCounter.style.float = "left"
     likeCounter.style.fontSize = "20px"
     likeCounter.style.marginTop = "20px"
-    likeCounter.innerText = "15"
+    likeCounter.innerText = likeCount.toString()
 
     likesContainer.appendChild(likeDiv)
     likesContainer.appendChild(likeCounter)
@@ -209,33 +204,3 @@ function addLikesDislikes() {
     var container = document.getElementById("modalContainer")
     container.appendChild(likesContainer)
 }
-
-function sendMessage(request, sendResponse) {
-    chrome.runtime.sendMessage(request, sendResponse)
-}
-
-function getStyleId() {
-    var url = document.URL;
-    pattern = '/\\d+/';
-    return url.match(pattern)[0].replaceAll('/', '');
-}
-
-function getRandomToken() {
-    var randomPool = new Uint8Array(32);
-    crypto.getRandomValues(randomPool);
-    var hex = '';
-    for (var i = 0; i < randomPool.length; ++i) {
-        hex += randomPool[i].toString(16);
-    }
-    return hex;
-}
-
-chrome.storage.sync.get('userid', function(items) {
-    userid = items.userid;
-    if (userid) {
-        // user Id found
-    } else {
-        userid = getRandomToken();
-        chrome.storage.sync.set({userid: userid}, function() {});
-    }
-});

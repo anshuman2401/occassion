@@ -1,5 +1,3 @@
-let occassion = ["Wedding", "Reception", "Marriage", "Festival", "Office", "Beach", "Dining", "Romantic", "Sports"];
-
 function createCartDiv(cartId) {
   let cartDiv = document.createElement("div");
   cartDiv.id = "cart_div_" + cartId;
@@ -16,7 +14,7 @@ function createCartDiv(cartId) {
 
     let ratings = document.createElement("div");
     ratings.style = "position: relative;top: -35px;left: 20px;font-size: 15px;color: white;text-shadow: 1px 1px black;";
-    ratings.innerHTML = occassion[i];
+    ratings.innerHTML = occasion[i];
 
     slide.appendChild(image);
     slide.appendChild(ratings);
@@ -37,8 +35,14 @@ function slideClicked(cartId, i) {
         "width: 140px;padding: 10px;filter: blur(1px);";
   }
   let urlString = document.getElementsByClassName("itemContainer-base-itemLink")[cartId].href;
-  var skuId = new URLSearchParams(urlString).get("skuId");
-  console.log(skuId, i);
+
+  const request = {
+    type: 'boughtOccasion',
+    styleId: getStyleId(urlString),
+    uid: userid,
+    occasion: occasion[i]
+  }
+  sendMessage(request);
 }
 
 function buyingForText(bId) {
