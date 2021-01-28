@@ -3,12 +3,13 @@ var posLeft = ["240px", "370px", "455px", "-50px", "385px", "280px", "465px", "3
 var width = ["250px", "330px", "180px", "320px", "365px", "290px", "280px", "200px", "380px"];
 var height = ["380px", "500px", "270px", "490px", "550px", "420px", "430px", "300px", "570px"];
 var currentIndex = 0;
+var userid;
 
 if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
-        
     var theButton = createOccasionButton()
     
     theButton.addEventListener('click', function() {
+        console.log("User Id: " + userid)
         createModal()
         createModalContainer()
         createSlideShow()
@@ -167,3 +168,25 @@ function getSkuId() {
     pattern = '\/([0-9]{8})'
     return url.match(pattern)[1]
 }
+
+function getRandomToken() {
+    // E.g. 8 * 32 = 256 bits token
+    var randomPool = new Uint8Array(32);
+    crypto.getRandomValues(randomPool);
+    var hex = '';
+    for (var i = 0; i < randomPool.length; ++i) {
+        hex += randomPool[i].toString(16);
+    }
+    // E.g. db18458e2782b2b77e36769c569e263a53885a9944dd0a861e5064eac16f1a
+    return hex;
+}
+
+chrome.storage.sync.get('userid', function(items) {
+    userid = items.userid;
+    if (userid) {
+        // user Id found
+    } else {
+        userid = getRandomToken();
+        chrome.storage.sync.set({userid: userid}, function() {});
+    }
+});
