@@ -1,5 +1,5 @@
 var posTop = ["230px", "100px", "230px", "130px", "95px", "180px", "140px", "200px", "80px"];
-var posLeft = ["240px", "370px", "455px", "464px", "385px", "280px", "465px", "310px", "304px"];
+var posLeft = ["240px", "370px", "455px", "464px", "390px", "280px", "465px", "310px", "304px"];
 var width = ["250px", "330px", "180px", "320px", "365px", "290px", "280px", "200px", "380px"];
 var height = ["380px", "500px", "270px", "490px", "550px", "420px", "430px", "300px", "570px"];
 var currentIndex = 0;
