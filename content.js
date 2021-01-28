@@ -16,7 +16,7 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
         
         addCanvas(modalContainer)
         addLikesDislikes()
-        fillLikeDislikes()
+        fillCountData(0, true);
 
         document.getElementsByClassName("slick-prev slick-arrow")[0].addEventListener("click", sliderClick);
         document.getElementsByClassName("slick-next slick-arrow")[0].addEventListener("click", sliderClick);
@@ -27,6 +27,7 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
             document.getElementById("canvasId").style.width = width[currentIndex];
             document.getElementById("canvasId").style.height = height[currentIndex];
             document.getElementById("occasionName").innerText = occasion[currentIndex] + " Occasion"
+            fillCountData(currentIndex, true);
         }    
     });
 }
@@ -235,23 +236,25 @@ function addLikesDislikes() {
     container.appendChild(likesContainer)
 }
 
-function fillLikeDislikes() {
+function fillCountData(index, bought) {
     let request = {
         type: 'getLike',
         styleId: getStyleId(document.URL),
-        occasion: occasion[0]
+        occasion: occasion[index]
     }
     sendMessage(request, function (response) {
-        document.getElementById("likeCounter").innerHTML = response.count;
+        document.getElementById("likeCounter").innerHTML = response.count ? response.count : 0;
     });
 
     request.type = 'getDislike';
     sendMessage(request, function (response) {
-        document.getElementById("dislikeCounter").innerHTML = response.count;
+        document.getElementById("dislikeCounter").innerHTML = response.count ? response.count : 0;
     });
 
-    request.type = 'getBoughtOccasion';
-    sendMessage(request, function (response) {
-        document.getElementById("boughtCounter").innerHTML = response.count;
-    });
+    if (bought) {
+        request.type = 'getBoughtOccasion';
+        sendMessage(request, function (response) {
+            document.getElementById("boughtCounter").innerHTML = response.count ? response.count : 0;
+        });
+    }
 }

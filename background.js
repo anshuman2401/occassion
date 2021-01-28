@@ -19,10 +19,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request) {
         switch (request.type) {
             case 'updateLike':
-                toggleLikes(request.styleId, request.uid, request.occasion);
+                toggleLikes(request.styleId, request.uid, request.occasion, sendResponse);
                 break;
             case 'updateDislike':
-                toggleDislikes(request.styleId, request.uid, request.occasion);
+                toggleDislikes(request.styleId, request.uid, request.occasion, sendResponse);
                 break;
             case 'getLike':
                 getLikes(request.styleId, request.occasion, sendResponse);
@@ -66,12 +66,12 @@ function updateBoughtOccasion(styleId, uid, occasion, allOccasions) {
     });
 }
 
-function toggleLikes(styleId, uid, occasion) {
+function toggleLikes(styleId, uid, occasion, callback) {
     toggle(database.ref(styleId + '/' + occasion), uid, 'likes', 'likeCount', true)
     toggle(database.ref(styleId + '/' + occasion), uid, 'dislikes', 'dislikeCount', false)
 }
 
-function toggleDislikes(styleId, uid, occasion) {
+function toggleDislikes(styleId, uid, occasion, callback) {
     toggle(database.ref(styleId + '/' + occasion), uid, 'dislikes', 'dislikeCount', true)
     toggle(database.ref(styleId + '/' + occasion), uid, 'likes', 'likeCount', false)
 }
