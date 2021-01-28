@@ -38,6 +38,18 @@ function createModal() {
     modal.style.display = "inline-block";
     modal.style.top = "150px"
     modal.style.left = "27%"
+
+    var closeBtn = document.createElement("div");
+    closeBtn.innerHTML = "x";
+    closeBtn.style = "position:absolute;font-weight:bold;z-index:31;left:780px;top:5px;cursor:pointer;"
+    closeBtn.addEventListener("click", closeModal);
+    
+    function closeModal() {
+        document.getElementById("mainModal").remove();
+    }
+
+    modal.appendChild(closeBtn);
+
     document.getElementsByClassName("pdp-pdp-container")[0].appendChild(modal);
 }
 
