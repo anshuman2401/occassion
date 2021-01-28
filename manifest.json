@@ -1,13 +1,17 @@
 { 
     "manifest_version": 2, 
-    "name": "Myntra", 
+    "name": "OccasionBuy",
     "description": "Occasion Extension", 
     "version": "1",
+    "background": {
+        "page": "background.html"
+    },
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
             "js": ["jquery-1.11.0.min.js", "jquery-migrate-1.2.1.min.js", "slick.min.js", "marvinj-1.0.min.js", "content.js"],
             "css": ["slick.css", "slick-theme.css"]
     }],
-    "web_accessible_resources": ["images/*"]
+    "web_accessible_resources": ["images/*"],
+    "content_security_policy":"script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'"
 }
