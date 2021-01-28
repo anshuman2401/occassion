@@ -15,43 +15,81 @@ firebase.analytics();
 
 const database = firebase.database();
 
-function toggleLikes(styleId, uid, occasion) {
-    toggle(database.ref(styleId + '/' + occasion), uid, 'likes', 'likeCount', true);
-    toggle(database.ref(styleId + '/' + occasion), uid, 'dislikes', 'dislikeCount', false);
-}
-
-function toggleDislikes(styleId, uid, occasion) {
-    toggle(database.ref(styleId + '/' + occasion), uid, 'dislikes', 'dislikeCount', true);
-    toggle(database.ref(styleId + '/' + occasion), uid, 'likes', 'likeCount', false);
-}
-
-function toggle(occasionRef, uid, type, count, clicked) {
-    occasionRef.transaction((update) => {
-        if  (update) {
-            if (update[type] && update[type][uid]) {
-                update[count]--;
-                update[type][uid] = null;
-            } else if (clicked) {
-                update[count]++;
-                if (!update[type])
-                    update[type] = {};
-                update[type][uid] = true;
-            }
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request) {
+        switch (request.type) {
+            case 'updateLike':
+                toggleLikes(request.styleId, request.uid, request.occasion, sendResponse);
+                // getLikes(request.styleId, request.occasion, sendResponse);
+            case 'updateDislike':
+                toggleDislikes(request.styleId, request.uid, request.occasion, sendResponse);
+                // getDislikes(request.styleId, request.occasion, sendResponse);
+            case 'getLike':
+                getLikes(request.styleId, request.occasion, sendResponse);
+            case 'getDislike':
+                getDislikes(request.styleId, request.occasion, sendResponse);
         }
-        return update;
+    }
+});
+
+
+function toggleLikes(styleId, uid, occasion, sendResponse) {
+    toggle(database.ref(styleId + '/' + occasion), uid, 'likes', 'likeCount', true, error => {
+        if (!error)
+            // toggle(database.ref(styleId + '/' + occasion), uid, 'dislikes', 'dislikeCount', false, error => {
+            //     if (!error)
+                    getLikes(styleId, occasion, sendResponse);
+            // });
+        });
+}
+
+function toggleDislikes(styleId, uid, occasion, sendResponse) {
+    toggle(database.ref(styleId + '/' + occasion), uid, 'dislikes', 'dislikeCount', true, error => {
+        // if (!error)
+        //     toggle(database.ref(styleId + '/' + occasion), uid, 'likes', 'likeCount', false, error => {
+                if (!error)
+                    getDislikes(styleId, occasion, sendResponse);
+            // });
+
     });
 }
 
-function getLikes(styleId, callback) {
-    getValue(database.ref(styleId + '/' + occasion), 'likeCount', callback);
+function toggle(occasionRef, uid, type, count, clicked, callback) {
+    occasionRef.transaction((update) => {
+        if (update && update[type] && update[type][uid]) {
+            update[count]--;
+            update[type][uid] = null;
+        } else if (clicked) {
+            if (!update)
+                update = {};
+
+            if (!update[count])
+                update[count] = 1;
+            else
+                update[count]++;
+
+            if (!update[type])
+                update[type] = {};
+            update[type][uid] = true;
+        }
+        return update;
+    }, error => {
+        callback(error)
+    });
 }
 
-function getDislikes(styleId, callback) {
-    getValue(database.ref(styleId + '/' + occasion), 'dislikeCount', callback);
+function getLikes(styleId, occasion, callback) {
+    getValue(database.ref(styleId + '/' + occasion + '/likeCount'), callback);
 }
 
-function getValue(occasionRef, count, callback) {
-    occasionRef.on(count, (snapshot) => {
-       callback(snapshot.val());
+function getDislikes(styleId, occasion, callback) {
+    getValue(database.ref(styleId + '/' + occasion + '/dislikeCount'), callback);
+}
+
+function getValue(countRef, callback) {
+    countRef.once('value').then((snapshot) => {
+       callback({
+           count: snapshot.val()
+       });
     });
 }

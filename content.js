@@ -9,7 +9,6 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
     var theButton = createOccasionButton()
     
     theButton.addEventListener('click', function() {
-        console.log("User Id: " + userid)
         createModal()
         createModalContainer()
         createSlideShow()
@@ -128,45 +127,65 @@ function createSlideShow () {
 
 function addLikesDislikes() {
     var likesContainer = document.createElement("div")
-    likesContainer.style.margin = "-15px 10px 5px 10px"
+    likesContainer.style.margin = "-10px 10px 5px 10px"
     likesContainer.style.backgroundColor = "#FCEDED"
 
     var disLikeDiv = document.createElement("div")
     var disLikeImage = document.createElement("img")
-    disLikeImage.src = chrome.extension.getURL("images/dislike.png");
+    disLikeImage.src = chrome.extension.getURL("images/thumbs-down-solid.svg");
     disLikeImage.style.float = "left"
-    disLikeImage.style.height = "45px"
-    disLikeImage.style.width = "45px"
+    disLikeImage.style.height = "30px"
+    disLikeImage.style.width = "30px"
     disLikeImage.style.margin = "10px"
     disLikeDiv.appendChild(disLikeImage)
     disLikeImage.addEventListener('click', function() {
-        toggleDislikes(getSkuId(), userid, 'occasion');
+        const request = {
+            type: 'updateDislike',
+            styleId: getStyleId(),
+            uid: userid,
+            occasion: currentIndex
+        }
+        sendMessage(request, function(response) {
+            console.log("Dislikes: " + response.count)
+        })
     });
 
     var likeDiv = document.createElement("div")
     var likeImage = document.createElement("img")
-    likeImage.src = chrome.extension.getURL("images/like.png");
+    likeImage.src = chrome.extension.getURL("images/thumbs-up-solid.svg");
     likeImage.style.float = "left"
-    likeImage.style.height = "50px"
-    likeImage.style.width = "50px"
+    likeImage.style.height = "30px"
+    likeImage.style.width = "30px"
     likeImage.style.margin = "10px"
     likeDiv.appendChild(likeImage)
     likeImage.addEventListener('click', function() {
-        toggleLikes(getSkuId(), userid, 'occasion');
+        const request = {
+            type: 'updateLike',
+            styleId: getStyleId(),
+            uid: userid,
+            occasion: currentIndex
+        }
+        sendMessage(request, function(response) {
+            console.log("Likes: " + response.count)
+        })
     });
 
 
-    likesContainer.appendChild(disLikeDiv)
     likesContainer.appendChild(likeDiv)
+    likesContainer.appendChild(disLikeDiv)
 
     var container = document.getElementById("modalContainer")
     container.appendChild(likesContainer)
 }
 
-function getSkuId() {
+function sendMessage(request, sendResponse) {
+    chrome.runtime.sendMessage(request, sendResponse)
+}
+
+function getStyleId() {
     var url = document.URL;
-    pattern = '\/([0-9]{8})'
-    return url.match(pattern)[1]
+    pattern = '/\\d+/';
+    return url.match(pattern)[0].replaceAll('/', '');
 }
 
 function getRandomToken() {

@@ -17,6 +17,7 @@
     "permissions": [
         "storage",
         "cookies",
-        "https://www.myntra.com/*"
+        "https://www.myntra.com/*",
+        "tabs"
     ]
 }
