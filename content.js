@@ -44,7 +44,7 @@ function createModal() {
     closeBtn.style.height = "40px"
     closeBtn.style.borderRadius = "20px"
     closeBtn.innerHTML = "X";
-    closeBtn.style = "font-size:20px;color:gray;background:#FCEDED;position:absolute;font-weight:bold;z-index:31;left:778px;top:-14px;cursor:pointer;padding:5px 10px 5px 10px;opacity:0.7;border:5px black;border-radius:20px;"
+    closeBtn.style = "font-size:20px;color:gray;background:#FCEDED;position:absolute;font-weight:bold;z-index:31;left:790px;top:-14px;cursor:pointer;padding:5px 10px 5px 10px;opacity:0.7;border:5px black;border-radius:20px;"
     closeBtn.addEventListener("click", closeModal);
 
     function closeModal() {
@@ -64,7 +64,7 @@ function createModalContainer () {
     modalContainer.style.textAlign = "center"
     modalContainer.style.color = "#000"
     modalContainer.style.borderRadius = "20px"
-    modalContainer.style.padding = "8px 0px"
+    modalContainer.style.padding = "8px"
     modalContainer.style.position = "absolute"
     modalContainer.style.zIndex = "30";
     modalContainer.style.backgroundColor = "#F2EDED"
@@ -152,7 +152,7 @@ function addLikesDislikes() {
     disLikeImage.style.float = "left"
     disLikeImage.style.height = "30px"
     disLikeImage.style.width = "30px"
-    disLikeImage.style.margin = "10px"
+    disLikeImage.style.margin = "13px 10px 10px 18px"
     disLikeDiv.appendChild(disLikeImage)
     disLikeImage.addEventListener('click', function() {
         const request = {
@@ -168,7 +168,7 @@ function addLikesDislikes() {
     var disLikeCounter = document.createElement("div")
     disLikeCounter.style.float = "left"
     disLikeCounter.style.fontSize = "20px"
-    disLikeCounter.style.marginTop = "20px"
+    disLikeCounter.style.marginTop = "15px"
     disLikeCounter.innerText = dislikeCount.toString()
 
     var likeDiv = document.createElement("div")
@@ -192,7 +192,7 @@ function addLikesDislikes() {
     var likeCounter = document.createElement("div")
     likeCounter.style.float = "left"
     likeCounter.style.fontSize = "20px"
-    likeCounter.style.marginTop = "20px"
+    likeCounter.style.marginTop = "15px"
     likeCounter.innerText = likeCount.toString()
 
     likesContainer.appendChild(likeDiv)
