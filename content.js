@@ -1,5 +1,6 @@
-var posTop = ["100px"];
-var posLeft = ["355px"];
+var posTop = ["100px", "120px","140px"];
+var posLeft = ["355px","365px","375px"];
+var currentIndex = 0;
 
 if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
         
@@ -24,6 +25,13 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
         
         addCanvas(imagesHolder)
         // loadStaticImages(imagesHolder)
+
+        document.getElementsByClassName("slick-prev slick-arrow")[0].addEventListener("click", prevClick);
+
+        function prevClick() {
+            currentIndex = document.getElementsByClassName("slick-slide slick-current slick-active")[0].attributes.getNamedItem("data-slick-index").value
+            document.getElementById("canvasId").style = canvas.style = "position:absolute; top:" + posTop[currentIndex] + "; left:" + posLeft[currentIndex] + "; z-index:1";
+        }    
     });
 }
 
