@@ -1,9 +1,9 @@
 var posTop = ["230px", "100px", "230px", "130px", "95px", "180px", "140px", "200px", "80px"];
-var posLeft = ["240px", "370px", "455px", "-50px", "385px", "280px", "465px", "310px", "-40px"];
+var posLeft = ["240px", "370px", "455px", "464px", "385px", "280px", "465px", "310px", "304px"];
 var width = ["250px", "330px", "180px", "320px", "365px", "290px", "280px", "200px", "380px"];
 var height = ["380px", "500px", "270px", "490px", "550px", "420px", "430px", "300px", "570px"];
 var currentIndex = 0;
-var likeCount = 0, dislikeCount = 0;
+var likeCount = 0, dislikeCount = 0, boughtCount = 0;
 
 if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
     var theButton = createOccasionButton()
@@ -26,6 +26,7 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
             document.getElementById("canvasId").style = "position:absolute; z-index:1; top:" + posTop[currentIndex] + ";left:" + posLeft[currentIndex] + ";";
             document.getElementById("canvasId").style.width = width[currentIndex];
             document.getElementById("canvasId").style.height = height[currentIndex];
+            document.getElementById("occasionName").innerText = occasion[currentIndex] + " Occasion"
         }    
     });
 }
@@ -195,12 +196,38 @@ function addLikesDislikes() {
     likeCounter.style.marginTop = "15px"
     likeCounter.innerText = likeCount.toString()
 
+    var boughtDiv = document.createElement("div")
+    var boughtImage = document.createElement("img")
+    boughtImage.src = chrome.extension.getURL("images/cart.svg");
+    boughtImage.style.float = "right"
+    boughtImage.style.height = "30px"
+    boughtImage.style.width = "30px"
+    boughtImage.style.margin = "10px"
+    boughtDiv.appendChild(boughtImage)
+
+    var boughtCounter = document.createElement("div")
+    boughtCounter.style.float = "right"
+    boughtCounter.style.fontSize = "20px"
+    boughtCounter.style.marginTop = "15px"
+    boughtCounter.innerText = boughtCount.toString()
+
     likesContainer.appendChild(likeDiv)
     likesContainer.appendChild(likeCounter)
 
     likesContainer.appendChild(disLikeDiv)
     likesContainer.appendChild(disLikeCounter)
 
+    likesContainer.appendChild(boughtDiv)
+    likesContainer.appendChild(boughtCounter)
+
+
     var container = document.getElementById("modalContainer")
+
+    var occasionName = document.createElement("div")
+    occasionName.id = "occasionName"
+    occasionName.innerText = occasion[currentIndex] + " Occasion"
+    occasionName.style.fontWeight = "bold"
+
+    container.appendChild(occasionName)
     container.appendChild(likesContainer)
 }
