@@ -6,8 +6,7 @@ function sendMessage(request, sendResponse) {
 }
 
 function getStyleId(url) {
-    pattern = '/\\d+/';
-    return url.match(pattern)[0].replaceAll('/', '');
+    return url.match(/\d+/)[0].replaceAll('/', '');
 }
 
 function getRandomToken() {

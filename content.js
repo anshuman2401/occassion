@@ -28,7 +28,7 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
             document.getElementById("canvasId").style.height = height[currentIndex];
             document.getElementById("occasionName").innerText = occasion[currentIndex] + " Occasion"
             fillCountData(currentIndex, true);
-        }    
+        }
     });
 }
 
@@ -243,18 +243,18 @@ function fillCountData(index, bought) {
         occasion: occasion[index]
     }
     sendMessage(request, function (response) {
-        document.getElementById("likeCounter").innerHTML = response.count ? response.count : 0;
+        likeCounter.innerHTML = response.count ? response.count : 0;
     });
 
     request.type = 'getDislike';
     sendMessage(request, function (response) {
-        document.getElementById("dislikeCounter").innerHTML = response.count ? response.count : 0;
+        dislikeCounter.innerHTML = response.count ? response.count : 0;
     });
 
     if (bought) {
         request.type = 'getBoughtOccasion';
         sendMessage(request, function (response) {
-            document.getElementById("boughtCounter").innerHTML = response.count ? response.count : 0;
+            boughtCounter.innerHTML = response.count ? response.count : 0;
         });
     }
 }
