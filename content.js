@@ -1,5 +1,8 @@
-var posTop = ["100px"];
-var posLeft = ["355px"];
+var posTop = ["230px", "110px","232px"];
+var posLeft = ["242px","345px","365px"];
+var width = ["220px", "295px", "160px", "160px"];
+var height = ["330px", "420px", "220px", "220px"];
+var currentIndex = 0;
 
 if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
         
@@ -24,6 +27,16 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
         
         addCanvas(imagesHolder)
         // loadStaticImages(imagesHolder)
+
+        document.getElementsByClassName("slick-prev slick-arrow")[0].addEventListener("click", sliderClick);
+        document.getElementsByClassName("slick-next slick-arrow")[0].addEventListener("click", sliderClick);
+
+        function sliderClick() {
+            currentIndex = document.getElementsByClassName("slick-slide slick-current slick-active")[0].attributes.getNamedItem("data-slick-index").value;
+            document.getElementById("canvasId").style = "position:absolute; z-index:1; top:" + posTop[currentIndex] + ";left:" + posLeft[currentIndex] + ";";
+            document.getElementById("canvasId").style.width = width[currentIndex];
+            document.getElementById("canvasId").style.height = height[currentIndex];
+        }    
     });
 }
 
@@ -31,8 +44,8 @@ function createModal() {
     var modal = document.createElement("div");
     modal.style.position = 'absolute'
     modal.style.display = "inline-block";
-    modal.style.top = "250px"
-    modal.style.left = "30%"
+    modal.style.top = "150px"
+    modal.style.left = "27%"
     document.getElementsByClassName("pdp-pdp-container")[0].appendChild(modal);
     return modal
 }
@@ -47,7 +60,7 @@ function getImageHolder () {
     imagesHolder.style.padding = "8px 0px"
     imagesHolder.style.position = "absolute"
     imagesHolder.style.zIndex = "30";
-    imagesHolder.style.backgroundColor = "#FFF"
+    imagesHolder.style.backgroundColor = "rgb(154 154 154)"
     // imagesHolder.style.opacity = "1"
     return imagesHolder
 }
@@ -81,8 +94,8 @@ function addCanvas(imagesHolder) {
     canvas.style = "position:absolute; top:" + posTop[0] + "; left:" + posLeft[0] + "; z-index:1";
     canvas.width = 400;
     canvas.height = 600;
-    canvas.style.width = "290px";
-    canvas.style.height = "420px";
+    canvas.style.width = width[0];
+    canvas.style.height = height[0];
   
     imagesHolder.appendChild(canvas)
     canvasImage.load(getFirstImageFromPage(), imageLoaded);
@@ -118,6 +131,7 @@ function getFirstImageFromPage() {
 function createSlideShow () {
     var container = document.createElement("div")
     container.className = "your-class"
+    container.style.margin = "10px"
     container.style.marginTop = "20px"
 
     var slide1 = document.createElement("div")
