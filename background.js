@@ -31,22 +31,38 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 getDislikes(request.styleId, request.occasion, sendResponse);
                 break;
             case 'boughtOccasion':
-                updateBoughtOccasion(request.styleId, request.uid, request.occasion);
+                updateBoughtOccasion(request.styleId, request.uid, request.occasion, request.allOccasions);
                 break;
         }
     }
 });
 
 
-function updateBoughtOccasion(styleId, uid, occasion) {
-    database.ref(styleId + '/' + occasion).transaction((update) => {
+function updateBoughtOccasion(styleId, uid, occasion, allOccasions) {
+    database.ref(styleId).transaction((update) => {
         if (!update)
             update = {};
+        if (!update[occasion])
+            update[occasion] = {};
 
-        // if (update.bought && update.bought[uid]) {
-        //     update.boughtCount++;
-        //     update.bought[uid] =
-        // }
+        for (let i = 0; i < allOccasions.length; i++) {
+            let occ = update[occasion];
+            if (allOccasions[i] === occasion) {
+                if (!occ.bought)
+                    occ.bought = {};
+                if (!occ.bought[uid]) {
+                    occ.bought[uid] = true;
+                    if (!occ.boughtCount)
+                        occ.boughtCount = 1;
+                    else
+                        occ.boughtCount++;
+                }
+            } else if (occ && occ.bought && occ.bought[uid]) {
+                occ.bought[uid] = null;
+                occ.boughtCount--;
+            }
+        }
+        return update;
     });
 }
 

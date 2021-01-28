@@ -3,7 +3,7 @@ function createCartDiv(cartId) {
   cartDiv.id = "cart_div_" + cartId;
   cartDiv.style = "display: inline-flex;width: -webkit-fill-available;overflow: scroll;height: 110px;";
 
-  for (let i = 0; i < 9; i++) {
+  for (let i = 0; i < occasion.length; i++) {
     let slide = document.createElement("div");
     slide.id = "slide_" + i;
 
@@ -29,7 +29,7 @@ function createCartDiv(cartId) {
 function slideClicked(cartId, i) {
   document.getElementById("cart_" + cartId + "_slide_image_" + i).style =
     "width: 140px;padding: 10px;filter: blur(0px);border: 2px solid #555;";
-  for (let j = 0; j < 9; j++) {
+  for (let j = 0; j < occasion.length; j++) {
     if (j != i)
       document.getElementById("cart_" + cartId + "_slide_image_" + j).style =
         "width: 140px;padding: 10px;filter: blur(1px);";
@@ -40,7 +40,8 @@ function slideClicked(cartId, i) {
     type: 'boughtOccasion',
     styleId: getStyleId(urlString),
     uid: userid,
-    occasion: occasion[i]
+    occasion: occasion[i],
+    allOccasions: occasion
   }
   sendMessage(request);
 }

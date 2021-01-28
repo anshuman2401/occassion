@@ -129,7 +129,7 @@ function createSlideShow () {
     container.className = "your-class"
     container.style.margin = "20px"
 
-    for (var i=0; i<9; i++) {
+    for (let i = 0; i < occasion.length; i++) {
         var slide = document.createElement("div")
         var image = document.createElement("img")
         image.style.width = "100%"
