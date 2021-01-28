@@ -33,6 +33,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             case 'boughtOccasion':
                 updateBoughtOccasion(request.styleId, request.uid, request.occasion, request.allOccasions);
                 break;
+            case 'getBoughtOccasion':
+                getBoughtOccasion(request.styleId, request.occasion, sendResponse);
+                break;
         }
     }
 });
@@ -46,20 +49,17 @@ function updateBoughtOccasion(styleId, uid, occasion, allOccasions) {
             update[occasion] = {};
 
         for (let i = 0; i < allOccasions.length; i++) {
-            let occ = update[occasion];
+            let occ = update[allOccasions[i]];
             if (allOccasions[i] === occasion) {
                 if (!occ.bought)
                     occ.bought = {};
                 if (!occ.bought[uid]) {
                     occ.bought[uid] = true;
-                    if (!occ.boughtCount)
-                        occ.boughtCount = 1;
-                    else
-                        occ.boughtCount++;
+                    occ.boughtCount = !occ.boughtCount ? 1 : occ.boughtCount+1;
                 }
             } else if (occ && occ.bought && occ.bought[uid]) {
                 occ.bought[uid] = null;
-                occ.boughtCount--;
+                occ.boughtCount = occ.boughtCount > 0 ? occ.boughtCount-1 : 0;
             }
         }
         return update;
@@ -82,13 +82,10 @@ function toggle(occasionRef, uid, type, count, clicked) {
             update = {};
 
         if (update[type] && update[type][uid]) {
-            update[count]--;
+            update[count] = update[count] > 0 ? update[count]-1 : 0;
             update[type][uid] = null;
         } else if (clicked) {
-            if (!update[count])
-                update[count] = 1;
-            else
-                update[count]++;
+            update[count] = !update[count] ? 1 : update[count]+1;
 
             if (!update[type])
                 update[type] = {};
@@ -104,6 +101,10 @@ function getLikes(styleId, occasion, callback) {
 
 function getDislikes(styleId, occasion, callback) {
     getValue(database.ref(styleId + '/' + occasion + '/dislikeCount'), callback);
+}
+
+function getBoughtOccasion(styleId, occasion, callback) {
+    getValue(database.ref(styleId + '/' + occasion + '/boughtCount'), callback)
 }
 
 function getValue(countRef, callback) {

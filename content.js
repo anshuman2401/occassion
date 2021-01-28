@@ -3,7 +3,6 @@ var posLeft = ["240px", "370px", "455px", "464px", "385px", "280px", "465px", "3
 var width = ["250px", "330px", "180px", "320px", "365px", "290px", "280px", "200px", "380px"];
 var height = ["380px", "500px", "270px", "490px", "550px", "420px", "430px", "300px", "570px"];
 var currentIndex = 0;
-var likeCount = 0, dislikeCount = 0, boughtCount = 0;
 
 if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
     var theButton = createOccasionButton()
@@ -17,6 +16,7 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
         
         addCanvas(modalContainer)
         addLikesDislikes()
+        fillLikeDislikes()
 
         document.getElementsByClassName("slick-prev slick-arrow")[0].addEventListener("click", sliderClick);
         document.getElementsByClassName("slick-next slick-arrow")[0].addEventListener("click", sliderClick);
@@ -166,11 +166,12 @@ function addLikesDislikes() {
     });
 
 
-    var disLikeCounter = document.createElement("div")
+    let disLikeCounter = document.createElement("div")
+    disLikeCounter.id = "dislikeCounter"
     disLikeCounter.style.float = "left"
     disLikeCounter.style.fontSize = "20px"
     disLikeCounter.style.marginTop = "15px"
-    disLikeCounter.innerText = dislikeCount.toString()
+    disLikeCounter.innerText = "0"
 
     var likeDiv = document.createElement("div")
     var likeImage = document.createElement("img")
@@ -190,11 +191,12 @@ function addLikesDislikes() {
         sendMessage(request)
     });
 
-    var likeCounter = document.createElement("div")
+    let likeCounter = document.createElement("div")
+    likeCounter.id = "likeCounter"
     likeCounter.style.float = "left"
     likeCounter.style.fontSize = "20px"
     likeCounter.style.marginTop = "15px"
-    likeCounter.innerText = likeCount.toString()
+    likeCounter.innerText = "0"
 
     var boughtDiv = document.createElement("div")
     var boughtImage = document.createElement("img")
@@ -205,11 +207,12 @@ function addLikesDislikes() {
     boughtImage.style.margin = "10px"
     boughtDiv.appendChild(boughtImage)
 
-    var boughtCounter = document.createElement("div")
+    let boughtCounter = document.createElement("div")
+    boughtCounter.id = "boughtCounter"
     boughtCounter.style.float = "right"
     boughtCounter.style.fontSize = "20px"
     boughtCounter.style.marginTop = "15px"
-    boughtCounter.innerText = boughtCount.toString()
+    boughtCounter.innerText = "0"
 
     likesContainer.appendChild(likeDiv)
     likesContainer.appendChild(likeCounter)
@@ -230,4 +233,25 @@ function addLikesDislikes() {
 
     container.appendChild(occasionName)
     container.appendChild(likesContainer)
+}
+
+function fillLikeDislikes() {
+    let request = {
+        type: 'getLike',
+        styleId: getStyleId(document.URL),
+        occasion: occasion[0]
+    }
+    sendMessage(request, function (response) {
+        document.getElementById("likeCounter").innerHTML = response.count;
+    });
+
+    request.type = 'getDislike';
+    sendMessage(request, function (response) {
+        document.getElementById("dislikeCounter").innerHTML = response.count;
+    });
+
+    request.type = 'getBoughtOccasion';
+    sendMessage(request, function (response) {
+        document.getElementById("boughtCounter").innerHTML = response.count;
+    });
 }
