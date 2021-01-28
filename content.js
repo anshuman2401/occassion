@@ -1,5 +1,7 @@
-var posTop = ["100px", "120px","140px"];
-var posLeft = ["355px","365px","375px"];
+var posTop = ["230px", "110px","232px"];
+var posLeft = ["242px","345px","365px"];
+var width = ["220px", "295px", "160px", "160px"];
+var height = ["330px", "420px", "220px", "220px"];
 var currentIndex = 0;
 
 if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
@@ -26,11 +28,14 @@ if(document.getElementsByClassName("pdp-action-container pdp-fixed")[0]) {
         addCanvas(imagesHolder)
         // loadStaticImages(imagesHolder)
 
-        document.getElementsByClassName("slick-prev slick-arrow")[0].addEventListener("click", prevClick);
+        document.getElementsByClassName("slick-prev slick-arrow")[0].addEventListener("click", sliderClick);
+        document.getElementsByClassName("slick-next slick-arrow")[0].addEventListener("click", sliderClick);
 
-        function prevClick() {
-            currentIndex = document.getElementsByClassName("slick-slide slick-current slick-active")[0].attributes.getNamedItem("data-slick-index").value
-            document.getElementById("canvasId").style = canvas.style = "position:absolute; top:" + posTop[currentIndex] + "; left:" + posLeft[currentIndex] + "; z-index:1";
+        function sliderClick() {
+            currentIndex = document.getElementsByClassName("slick-slide slick-current slick-active")[0].attributes.getNamedItem("data-slick-index").value;
+            document.getElementById("canvasId").style = "position:absolute; z-index:1; top:" + posTop[currentIndex] + ";left:" + posLeft[currentIndex] + ";";
+            document.getElementById("canvasId").style.width = width[currentIndex];
+            document.getElementById("canvasId").style.height = height[currentIndex];
         }    
     });
 }
@@ -89,8 +94,8 @@ function addCanvas(imagesHolder) {
     canvas.style = "position:absolute; top:" + posTop[0] + "; left:" + posLeft[0] + "; z-index:1";
     canvas.width = 400;
     canvas.height = 600;
-    canvas.style.width = "290px";
-    canvas.style.height = "420px";
+    canvas.style.width = width[0];
+    canvas.style.height = height[0];
   
     imagesHolder.appendChild(canvas)
     canvasImage.load(getFirstImageFromPage(), imageLoaded);
