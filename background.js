@@ -1,4 +1,5 @@
 // Firebase Config Initialize
+
 const firebaseConfig = {
     apiKey: "AIzaSyCsDrAPKLAaFRFS09-kEKk0Nitm2lWGmoc",
     authDomain: "occasionbuy.firebaseapp.com",
@@ -12,7 +13,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
-var database = firebase.database();
+const database = firebase.database();
 
 function toggleLikes(styleId, uid, occasion) {
     toggle(database.ref(styleId + '/' + occasion), uid, 'likes', 'likeCount', true);
